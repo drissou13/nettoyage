@@ -660,7 +660,7 @@
     <div class="survey-thanks" id="surveyThanks">
       <span style="font-size:2rem;">🙏</span>
       <h2 style="margin:0;">Merci pour votre retour !</h2>
-      <p style="margin:0;">Votre logiciel de messagerie va s'ouvrir avec votre avis pré-rempli — il ne vous reste plus qu'à cliquer sur envoyer.</p>
+      <p style="margin:0;">Votre avis a bien été pris en compte, merci pour votre retour !</p>
     </div>
   </div>
 </div>
@@ -712,11 +712,6 @@
     stats.satisfaction = `${rate} %`;
     persistStats(stats);
 
-    const subject = encodeURIComponent(`Enquête satisfaction – ${selectedChoice}`);
-    const body = encodeURIComponent(
-      `Réponse : ${selectedChoice}\nCommentaire : ${surveyComment.value.trim() || '(aucun)'}`
-    );
-    window.location.href = `mailto:contact@nemo-proprete.fr?subject=${subject}&body=${body}`;
     surveyForm.classList.add('hidden');
     surveyThanks.classList.add('open');
   });
