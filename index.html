@@ -689,8 +689,29 @@
     });
   });
 
+  const SURVEY_KEY = 'nemo_survey_responses';
+  function getSurveyResponses(){
+    try{
+      const raw = localStorage.getItem(SURVEY_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(err){ return []; }
+  }
+  function saveSurveyResponses(list){
+    try{ localStorage.setItem(SURVEY_KEY, JSON.stringify(list)); }catch(err){}
+  }
+
   sendSurveyBtn.addEventListener('click', () => {
     if(!selectedChoice) return;
+
+    // Enregistre la réponse et recalcule le taux de satisfaction
+    const responses = getSurveyResponses();
+    responses.push({ positive: selectedChoice.startsWith('Oui'), comment: surveyComment.value.trim(), createdAt: Date.now() });
+    saveSurveyResponses(responses);
+    const rate = Math.round((responses.filter(r => r.positive).length / responses.length) * 100);
+    const stats = getStats();
+    stats.satisfaction = `${rate} %`;
+    persistStats(stats);
+
     const subject = encodeURIComponent(`Enquête satisfaction – ${selectedChoice}`);
     const body = encodeURIComponent(
       `Réponse : ${selectedChoice}\nCommentaire : ${surveyComment.value.trim() || '(aucun)'}`
@@ -833,18 +854,47 @@
     if(sessionStorage.getItem('nemo_admin_session') === '1'){ showAdmin(); }
   }catch(err){}
 
-  // ---------- Statistiques admin (éditables) ----------
+  // ---------- Statistiques admin (éditables + calculées automatiquement) ----------
   const STATS_KEY = 'nemo_admin_stats';
   const DEFAULT_STATS = { interventions: '128', devis: '34', ca: '9 420 €', satisfaction: '96 %' };
   const ZERO_STATS = { interventions: '0', devis: '0', ca: '0 €', satisfaction: '0 %' };
   const statEls = Array.from(document.querySelectorAll('.stat-editable'));
 
-  function loadStats(){
-    let data;
+  const SERVICE_PRICES = {
+    "Nettoyage résidentiel": 35,
+    "Nettoyage de bureaux": 60,
+    "Nettoyage de fin de bail": 120,
+    "Lavage de vitres": 25,
+    "Nettoyage après travaux": 150
+  };
+
+  function parseAmount(str){
+    const digits = String(str).replace(/[^\d]/g, '');
+    return digits ? parseInt(digits, 10) : 0;
+  }
+  function formatAmount(num){
+    return num.toLocaleString('fr-FR') + ' €';
+  }
+  function formatDateFR(isoDate){
+    if(!isoDate) return new Date().toLocaleDateString('fr-FR');
+    const [y,m,d] = isoDate.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  function getStats(){
     try{
       const raw = localStorage.getItem(STATS_KEY);
-      data = raw ? JSON.parse(raw) : DEFAULT_STATS;
-    }catch(err){ data = DEFAULT_STATS; }
+      return raw ? JSON.parse(raw) : {...DEFAULT_STATS};
+    }catch(err){ return {...DEFAULT_STATS}; }
+  }
+
+  function persistStats(data){
+    try{ localStorage.setItem(STATS_KEY, JSON.stringify(data)); }catch(err){}
+    if(adminView.classList.contains('open')) loadStats();
+  }
+
+  function loadStats(){
+    const data = getStats();
     statEls.forEach(el => {
       const key = el.getAttribute('data-stat');
       if(data[key] !== undefined) el.textContent = data[key];
@@ -867,7 +917,10 @@
 
   document.getElementById('resetStatsBtn').addEventListener('click', () => {
     statEls.forEach(el => { el.textContent = ZERO_STATS[el.getAttribute('data-stat')]; });
-    try{ localStorage.setItem(STATS_KEY, JSON.stringify(ZERO_STATS)); }catch(err){}
+    try{
+      localStorage.setItem(STATS_KEY, JSON.stringify(ZERO_STATS));
+      localStorage.removeItem(SURVEY_KEY); // repart de zéro pour le calcul du taux de satisfaction
+    }catch(err){}
     editSavedMsg.textContent = "Statistiques réinitialisées à zéro.";
   });
 
@@ -917,9 +970,45 @@
         const id = btn.getAttribute('data-toggle');
         const list = getBookings();
         const item = list.find(b => b.id === id);
-        if(item) item.status = item.status === 'done' ? 'pending' : 'done';
+        if(!item) return;
+        const wasDone = item.status === 'done';
+        item.status = wasDone ? 'pending' : 'done';
         saveBookings(list);
+
+        const recent = getRecentBookings();
+        const recentId = 'b-' + item.id;
+        const price = SERVICE_PRICES[item.service] || 0;
+        const stats = getStats();
+
+        if(!wasDone){
+          // Passage à "traité" : ajout aux réservations récentes + mise à jour des stats
+          if(!recent.find(r => r.id === recentId)){
+            recent.push({
+              id: recentId,
+              client: item.name,
+              service: item.service,
+              date: formatDateFR(item.date),
+              amount: formatAmount(price),
+              status: 'done'
+            });
+            saveRecentBookings(recent);
+            stats.interventions = String(parseAmount(stats.interventions) + 1);
+            stats.ca = formatAmount(parseAmount(stats.ca) + price);
+            persistStats(stats);
+          }
+        } else {
+          // Retour à "en attente" : on retire l'entrée et on annule l'effet sur les stats
+          const idx = recent.findIndex(r => r.id === recentId);
+          if(idx !== -1){
+            recent.splice(idx, 1);
+            saveRecentBookings(recent);
+            stats.interventions = String(Math.max(0, parseAmount(stats.interventions) - 1));
+            stats.ca = formatAmount(Math.max(0, parseAmount(stats.ca) - price));
+            persistStats(stats);
+          }
+        }
         renderBookings();
+        renderRecentBookings();
       });
     });
     container.querySelectorAll('[data-delete]').forEach(btn => {
@@ -945,6 +1034,9 @@
       createdAt: Date.now()
     });
     saveBookings(list);
+    const stats = getStats();
+    stats.devis = String(parseAmount(stats.devis) + 1);
+    persistStats(stats);
     document.getElementById('rdvStatus').textContent = "Votre demande de rendez-vous a bien été enregistrée.";
     e.target.reset();
   });
