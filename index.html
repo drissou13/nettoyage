@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Némo Propreté — Services de nettoyage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F2EC;
+    --surface:#FFFFFF;
+    --ink:#16241F;
+    --ink-soft:#4B5750;
+    --accent:#3F7A6C;
+    --accent-deep:#2C5A4F;
+    --clay:#C98A4B;
+    --line:#DCD5C6;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12201B;
+      --surface:#182922;
+      --ink:#EDEAE1;
+      --ink-soft:#B7C0BA;
+      --accent:#6FAF9E;
+      --accent-deep:#8FC5B6;
+      --clay:#E0A366;
+      --line:#2B3A33;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12201B; --surface:#182922; --ink:#EDEAE1; --ink-soft:#B7C0BA;
+    --accent:#6FAF9E; --accent-deep:#8FC5B6; --clay:#E0A366; --line:#2B3A33;
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.6; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight:700; letter-spacing:-0.01em; margin:0;
+  }
+  a{color:inherit;}
+  img{max-width:100%;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+  .measure{max-width:62ch;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px; max-width:1120px; margin:0 auto;
+  }
+  .logo{font-size:1.25rem; display:flex; align-items:baseline; gap:8px;}
+  .logo .dot{width:9px; height:9px; border-radius:50%; background:var(--accent); display:inline-block;}
+  .nav-links{display:flex; gap:28px; align-items:center; list-style:none; margin:0; padding:0;}
+  .nav-links a{text-decoration:none; font-size:0.95rem; color:var(--ink-soft); transition:color .15s;}
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--ink);}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:11px 20px; border-radius:8px; border:1px solid transparent;
+    font-family:inherit; font-size:0.95rem; font-weight:600; cursor:pointer;
+    text-decoration:none; transition:transform .12s ease, background .15s ease;
+  }
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{background:var(--accent-deep);}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-soft);}
+  .btn-small{padding:8px 14px; font-size:0.85rem;}
+  .nav-admin{
+    background:transparent; border:1px solid var(--line); color:var(--ink-soft);
+    padding:8px 16px; border-radius:100px; font-size:0.85rem; cursor:pointer; font-family:inherit;
+  }
+  .nav-admin:hover{border-color:var(--accent); color:var(--accent);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:88px 0 72px;}
+  .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:56px; align-items:end;}
+  .eyebrow-plain{color:var(--accent-deep); font-size:0.95rem; margin-bottom:18px;}
+  .hero h1{font-size:clamp(2.4rem, 5vw, 3.6rem); line-height:1.04; max-width:14ch;}
+  .hero p{color:var(--ink-soft); margin-top:22px; max-width:46ch; font-size:1.08rem;}
+  .hero-actions{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .hero-panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:28px; align-self:stretch; display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .hero-stat{display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line);}
+  .hero-stat:first-child{border-top:none;}
+  .hero-stat b{font-family:'Bricolage Grotesque'; font-size:1.4rem;}
+  .hero-stat span{color:var(--ink-soft); font-size:0.9rem; max-width:20ch; text-align:right;}
+
+  /* ---------- Section shell ---------- */
+  section{padding:64px 0;}
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:40px; flex-wrap:wrap;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.2rem);}
+  .section-head p{color:var(--ink-soft); max-width:40ch;}
+
+  /* ---------- Services ---------- */
+  .services-list{border-top:1px solid var(--line);}
+  .service-row{
+    display:grid; grid-template-columns:2fr 5fr auto; gap:24px; align-items:center;
+    padding:26px 0; border-bottom:1px solid var(--line);
+  }
+  .service-row h3{font-size:1.15rem;}
+  .service-row p{color:var(--ink-soft); font-size:0.95rem; margin:0;}
+  .service-index{color:var(--accent); font-family:'Bricolage Grotesque'; font-size:0.95rem;}
+  .service-price{font-family:'Bricolage Grotesque'; font-size:1.1rem; white-space:nowrap;}
+
+  /* ---------- Process ---------- */
+  .process{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+  .process-step{padding:30px 26px; border-left:1px solid var(--line);}
+  .process-step:first-child{border-left:none;}
+  .process-step b{display:block; font-family:'Bricolage Grotesque'; font-size:1.6rem; color:var(--accent); margin-bottom:12px;}
+  .process-step p{color:var(--ink-soft); font-size:0.92rem; margin:8px 0 0;}
+
+  /* ---------- Pricing ---------- */
+  .pricing-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .price-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:30px;
+    display:flex; flex-direction:column;
+  }
+  .price-card.featured{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
+  .price-tag{color:var(--ink-soft); font-size:0.85rem; margin-bottom:6px;}
+  .price-amount{font-family:'Bricolage Grotesque'; font-size:2.1rem; margin:6px 0 18px;}
+  .price-amount sub{font-size:0.95rem; font-weight:400; color:var(--ink-soft);}
+  .price-card ul{list-style:none; margin:0 0 24px; padding:0; flex-grow:1;}
+  .price-card li{padding:9px 0; border-top:1px solid var(--line); font-size:0.92rem; color:var(--ink-soft);}
+  .price-card li:first-child{border-top:none;}
+
+  /* ---------- Testimonials ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .testi-card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:26px;}
+  .testi-card p{font-size:0.98rem; color:var(--ink); margin:0 0 18px;}
+  .testi-name{font-size:0.88rem; color:var(--ink-soft);}
+
+  /* ---------- Contact ---------- */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px;}
+  form{display:flex; flex-direction:column; gap:16px;}
+  label{font-size:0.85rem; color:var(--ink-soft); margin-bottom:6px; display:block;}
+  input, textarea{
+    width:100%; padding:12px 14px; border-radius:8px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink); font-family:inherit; font-size:0.95rem;
+  }
+  input:focus-visible, textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+  textarea{resize:vertical; min-height:110px;}
+  .form-status{font-size:0.9rem; color:var(--accent-deep); min-height:1.2em;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line); padding:36px 0; margin-top:20px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; color:var(--ink-soft); font-size:0.88rem;}
+
+  /* ---------- Admin overlay ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(15,20,18,0.55); backdrop-filter:blur(3px);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .overlay.open{display:flex;}
+  .login-card{
+    background:var(--surface); border-radius:16px; padding:34px; width:100%; max-width:380px;
+    border:1px solid var(--line);
+  }
+  .login-card h3{font-size:1.3rem; margin-bottom:6px;}
+  .login-card p{color:var(--ink-soft); font-size:0.9rem; margin:0 0 22px;}
+  .login-close{float:right; background:none; border:none; color:var(--ink-soft); font-size:1.2rem; cursor:pointer;}
+  .login-error{color:#B5473C; font-size:0.85rem; min-height:1.1em; margin-top:4px;}
+
+  /* ---------- Admin dashboard ---------- */
+  #adminView{display:none;}
+  #adminView.open{display:block;}
+  #siteView.hidden{display:none;}
+  .admin-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px; border-bottom:1px solid var(--line);
+    background:var(--surface); position:sticky; top:0;
+  }
+  .admin-wrap{max-width:1120px; margin:0 auto; padding:36px 24px 64px;}
+  .admin-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:36px;}
+  .admin-stat{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px;}
+  .admin-stat span{color:var(--ink-soft); font-size:0.82rem;}
+  .admin-stat b{display:block; font-family:'Bricolage Grotesque'; font-size:1.8rem; margin-top:6px;}
+  .stat-editable{cursor:text; border-radius:6px; padding:2px 6px; margin-left:-6px; transition:background .15s;}
+  .stat-editable:hover{background:color-mix(in srgb, var(--accent) 10%, transparent);}
+  .stat-editable:focus{outline:1.5px dashed var(--accent); outline-offset:2px; background:color-mix(in srgb, var(--accent) 10%, transparent);}
+  table{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  th, td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); font-size:0.9rem;}
+  th{color:var(--ink-soft); font-weight:500; font-size:0.8rem;}
+  tr:last-child td{border-bottom:none;}
+  .tag{padding:3px 10px; border-radius:100px; font-size:0.78rem;}
+  .tag-done{background:color-mix(in srgb, var(--accent) 18%, transparent); color:var(--accent-deep);}
+  .tag-pending{background:color-mix(in srgb, var(--clay) 20%, transparent); color:var(--clay);}
+  .overflow-x{overflow-x:auto;}
+  .row-delete-btn{
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    padding:5px 10px; border-radius:6px; font-size:0.78rem; cursor:pointer; font-family:inherit;
+  }
+  .row-delete-btn:hover{border-color:#B5473C; color:#B5473C;}
+
+  /* ---------- Enquête satisfaction ---------- */
+  #surveyView{display:none; min-height:100vh; align-items:center; justify-content:center; padding:40px 20px;}
+  #surveyView.open{display:flex;}
+  .survey-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:18px;
+    padding:44px; width:100%; max-width:480px; text-align:center;
+  }
+  .survey-card h2{font-size:1.5rem; margin-bottom:10px;}
+  .survey-card p{color:var(--ink-soft); margin:0 0 28px;}
+  .survey-choices{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:22px;}
+  .survey-choice{
+    flex:1; min-width:150px; padding:22px 16px; border-radius:14px; border:1.5px solid var(--line);
+    background:var(--bg); cursor:pointer; font-family:inherit; font-size:1rem; font-weight:600; color:var(--ink);
+    transition:border-color .15s, background .15s;
+  }
+  .survey-choice:hover{border-color:var(--accent);}
+  .survey-choice.selected{border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, transparent);}
+  .survey-choice .emoji{display:block; font-size:1.8rem; margin-bottom:8px;}
+  .survey-card textarea{margin-bottom:18px;}
+  .survey-thanks{display:none; flex-direction:column; align-items:center; gap:10px;}
+  .survey-thanks.open{display:flex;}
+  .survey-form.hidden{display:none;}
+
+  /* ---------- Mode édition ---------- */
+  .editable[contenteditable="true"]{
+    outline:1.5px dashed var(--accent); outline-offset:3px; border-radius:4px;
+    cursor:text; background:color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+  .editable[contenteditable="true"]:focus{outline-style:solid;}
+  .edit-bar{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%);
+    z-index:200; background:var(--ink); color:var(--bg);
+    padding:14px 18px; border-radius:100px; display:none;
+    align-items:center; gap:14px; box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  }
+  .edit-bar.open{display:flex;}
+  .edit-bar span{font-size:0.85rem; opacity:0.8;}
+  .edit-bar .btn{padding:9px 16px; font-size:0.85rem;}
+  .edit-bar .btn-primary{background:var(--accent);}
+  .edit-bar .btn-ghost{border-color:rgba(255,255,255,0.3); color:var(--bg);}
+
+  /* ---------- Rendez-vous ---------- */
+  .rdv-panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:34px;
+  }
+  select{
+    width:100%; padding:12px 14px; border-radius:8px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink); font-family:inherit; font-size:0.95rem;
+  }
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+
+  /* ---------- Demandes de RDV (admin) ---------- */
+  .booking-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; margin-bottom:12px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .booking-info b{font-family:'Bricolage Grotesque'; font-size:1.02rem;}
+  .booking-info .meta{color:var(--ink-soft); font-size:0.85rem; margin-top:4px;}
+  .booking-info .msg{margin-top:8px; font-size:0.9rem;}
+  .booking-actions{display:flex; gap:8px; align-items:flex-start;}
+  .empty-note{color:var(--ink-soft); font-size:0.9rem; font-style:italic;}
+
+  @media (max-width:860px){
+    .hero-grid, .contact-grid{grid-template-columns:1fr;}
+    .process{grid-template-columns:1fr 1fr;}
+    .process-step:nth-child(3){border-left:none;}
+    .pricing-grid, .testi-grid{grid-template-columns:1fr;}
+    .service-row{grid-template-columns:1fr; gap:8px;}
+    .nav-links{display:none;}
+    .admin-grid{grid-template-columns:1fr 1fr;}
+    .field-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= SITE ================= -->
+<div id="siteView">
+
+  <header>
+    <div class="nav">
+      <div class="logo"><span class="dot"></span>Némo Propreté</div>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="#avis">Avis</a></li>
+        <li><a href="#rdv">Rendez-vous</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="nav-admin" id="openLogin">Espace admin</button>
+        <a href="#contact" class="btn btn-primary btn-small">Devis gratuit</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow-plain editable" data-edit="hero-eyebrow">Entretien résidentiel &amp; professionnel</p>
+          <h1 class="editable" data-edit="hero-title">Lorem ipsum dolor sit amet, un intérieur impeccable.</h1>
+          <p class="editable" data-edit="hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Curabitur euismod, nisl eget consectetur sagittis, nisl nunc consequat nunc, eget sagittis nisl nunc euismod.</p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">Demander un devis</a>
+            <a href="#services" class="btn btn-ghost">Voir nos prestations</a>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-stat"><b class="editable" data-edit="stat-1-value">4,8/5</b><span class="editable" data-edit="stat-1-label">Lorem ipsum dolor sit amet consectetur</span></div>
+          <div class="hero-stat"><b class="editable" data-edit="stat-2-value">1 200+</b><span class="editable" data-edit="stat-2-label">Interventions lorem ipsum réalisées</span></div>
+          <div class="hero-stat"><b class="editable" data-edit="stat-3-value">7j/7</b><span class="editable" data-edit="stat-3-label">Disponibilité lorem ipsum adipiscing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="editable" data-edit="services-title">Nos prestations</h2>
+            <p class="editable" data-edit="services-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+          </div>
+        </div>
+        <div class="services-list">
+          <div class="service-row">
+            <span class="service-index">01 — Domicile</span>
+            <div>
+              <h3 class="editable" data-edit="service-1-title">Nettoyage résidentiel</h3>
+              <p class="editable" data-edit="service-1-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam quis nostrud.</p>
+            </div>
+            <span class="service-price editable" data-edit="service-1-price">dès 35 €</span>
+          </div>
+          <div class="service-row">
+            <span class="service-index">02 — Bureaux</span>
+            <div>
+              <h3 class="editable" data-edit="service-2-title">Nettoyage de bureaux</h3>
+              <p class="editable" data-edit="service-2-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p>
+            </div>
+            <span class="service-price editable" data-edit="service-2-price">dès 60 €</span>
+          </div>
+          <div class="service-row">
+            <span class="service-index">03 — Fin de bail</span>
+            <div>
+              <h3 class="editable" data-edit="service-3-title">Nettoyage de fin de bail</h3>
+              <p class="editable" data-edit="service-3-desc">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+            </div>
+            <span class="service-price editable" data-edit="service-3-price">dès 120 €</span>
+          </div>
+          <div class="service-row">
+            <span class="service-index">04 — Vitres</span>
+            <div>
+              <h3 class="editable" data-edit="service-4-title">Lavage de vitres</h3>
+              <p class="editable" data-edit="service-4-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+            </div>
+            <span class="service-price editable" data-edit="service-4-price">dès 25 €</span>
+          </div>
+          <div class="service-row">
+            <span class="service-index">05 — Chantier</span>
+            <div>
+              <h3 class="editable" data-edit="service-5-title">Nettoyage après travaux</h3>
+              <p class="editable" data-edit="service-5-desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+            </div>
+            <span class="service-price editable" data-edit="service-5-price">dès 150 €</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="editable" data-edit="process-title">Comment ça se passe</h2>
+            <p class="editable" data-edit="process-intro">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</p>
+          </div>
+        </div>
+        <div class="process">
+          <div class="process-step">
+            <b>1</b>
+            <h3 class="editable" data-edit="process-1-title">Demande</h3>
+            <p class="editable" data-edit="process-1-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.</p>
+          </div>
+          <div class="process-step">
+            <b>2</b>
+            <h3 class="editable" data-edit="process-2-title">Devis</h3>
+            <p class="editable" data-edit="process-2-desc">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          </div>
+          <div class="process-step">
+            <b>3</b>
+            <h3 class="editable" data-edit="process-3-title">Intervention</h3>
+            <p class="editable" data-edit="process-3-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+          </div>
+          <div class="process-step">
+            <b>4</b>
+            <h3 class="editable" data-edit="process-4-title">Suivi</h3>
+            <p class="editable" data-edit="process-4-desc">Excepteur sint occaecat cupidatat non proident sunt in culpa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="tarifs">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="editable" data-edit="pricing-title">Nos formules</h2>
+            <p class="editable" data-edit="pricing-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+          </div>
+        </div>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <span class="price-tag editable" data-edit="price-1-tag">Essentiel</span>
+            <div class="price-amount editable" data-edit="price-1-amount">35 € <sub>/ visite</sub></div>
+            <ul class="editable" data-edit="price-1-list">
+              <li>Lorem ipsum dolor sit amet</li>
+              <li>Consectetur adipiscing elit</li>
+              <li>Sed do eiusmod tempor</li>
+              <li>Incididunt ut labore</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Choisir</a>
+          </div>
+          <div class="price-card featured">
+            <span class="price-tag editable" data-edit="price-2-tag">Confort</span>
+            <div class="price-amount editable" data-edit="price-2-amount">60 € <sub>/ visite</sub></div>
+            <ul class="editable" data-edit="price-2-list">
+              <li>Lorem ipsum dolor sit amet</li>
+              <li>Ut enim ad minim veniam</li>
+              <li>Quis nostrud exercitation</li>
+              <li>Ullamco laboris nisi</li>
+              <li>Aliquip ex ea commodo</li>
+            </ul>
+            <a href="#contact" class="btn btn-primary">Choisir</a>
+          </div>
+          <div class="price-card">
+            <span class="price-tag editable" data-edit="price-3-tag">Premium</span>
+            <div class="price-amount editable" data-edit="price-3-amount">95 € <sub>/ visite</sub></div>
+            <ul class="editable" data-edit="price-3-list">
+              <li>Duis aute irure dolor</li>
+              <li>In reprehenderit in voluptate</li>
+              <li>Velit esse cillum dolore</li>
+              <li>Eu fugiat nulla pariatur</li>
+              <li>Excepteur sint occaecat</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Choisir</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="avis">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="editable" data-edit="testi-title">Ce qu'on dit de nous</h2>
+            <p class="editable" data-edit="testi-intro">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="testi-grid">
+          <div class="testi-card">
+            <p class="editable" data-edit="testi-1-quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."</p>
+            <div class="testi-name editable" data-edit="testi-1-name">— Client lorem, Ipsum-ville</div>
+          </div>
+          <div class="testi-card">
+            <p class="editable" data-edit="testi-2-quote">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo."</p>
+            <div class="testi-name editable" data-edit="testi-2-name">— Client dolor, Sit-sur-Amet</div>
+          </div>
+          <div class="testi-card">
+            <p class="editable" data-edit="testi-3-quote">"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla."</p>
+            <div class="testi-name editable" data-edit="testi-3-name">— Client consectetur, Adipiscing</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RENDEZ-VOUS -->
+    <section id="rdv">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="editable" data-edit="rdv-title">Prendre rendez-vous</h2>
+            <p class="editable" data-edit="rdv-intro">Lorem ipsum dolor sit amet, choisissez le service et la date qui vous conviennent.</p>
+          </div>
+        </div>
+        <div class="rdv-panel">
+          <form id="rdvForm">
+            <div class="field-row">
+              <div>
+                <label for="rdvName">Nom</label>
+                <input id="rdvName" type="text" placeholder="Lorem Ipsum" required>
+              </div>
+              <div>
+                <label for="rdvContact">Email ou téléphone</label>
+                <input id="rdvContact" type="text" placeholder="lorem@ipsum.fr" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div>
+                <label for="rdvService">Service souhaité</label>
+                <select id="rdvService">
+                  <option>Nettoyage résidentiel</option>
+                  <option>Nettoyage de bureaux</option>
+                  <option>Nettoyage de fin de bail</option>
+                  <option>Lavage de vitres</option>
+                  <option>Nettoyage après travaux</option>
+                </select>
+              </div>
+              <div>
+                <label for="rdvDate">Date souhaitée</label>
+                <input id="rdvDate" type="date" required>
+              </div>
+            </div>
+            <div>
+              <label for="rdvMessage">Message (optionnel)</label>
+              <textarea id="rdvMessage" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit" style="align-self:flex-start; margin-top:6px;">Confirmer la demande</button>
+            <div class="form-status" id="rdvStatus"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <h2 class="editable" data-edit="contact-title">Demander un devis</h2>
+          <p class="measure editable" data-edit="contact-intro" style="color:var(--ink-soft); margin-top:14px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti curabitur euismod nisl eget consectetur.</p>
+          <div class="editable" data-edit="contact-address" style="margin-top:28px; color:var(--ink-soft); font-size:0.92rem; line-height:2;">
+            <div>Lorem Ipsum, 12 rue Consectetur</div>
+            <div>contact@nemo-proprete.fr</div>
+            <div>+33 1 23 45 67 89</div>
+          </div>
+        </div>
+        <form id="contactForm">
+          <div>
+            <label for="name">Nom</label>
+            <input id="name" type="text" placeholder="Lorem Ipsum" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="lorem@ipsum.fr" required>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit" style="align-self:flex-start;">Envoyer la demande</button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <span class="editable" data-edit="footer-text">© 2026 Némo Propreté — Lorem ipsum dolor sit amet.</span>
+      <span>Site de démonstration</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= LOGIN OVERLAY ================= -->
+<div class="overlay" id="loginOverlay">
+  <div class="login-card">
+    <button class="login-close" id="closeLogin" aria-label="Fermer">✕</button>
+    <h3>Espace admin</h3>
+    <p>Connectez-vous pour accéder au tableau de bord.</p>
+    <form id="loginForm">
+      <label for="user">Identifiant</label>
+      <input id="user" type="text" autocomplete="username" style="margin-bottom:14px;">
+      <label for="pass">Mot de passe</label>
+      <input id="pass" type="password" autocomplete="current-password">
+      <div class="login-error" id="loginError"></div>
+      <button class="btn btn-primary" type="submit" style="width:100%; margin-top:18px;">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div id="adminView">
+  <div class="admin-bar">
+    <div class="logo"><span class="dot"></span>Némo Propreté — Admin</div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-ghost btn-small" id="copySurveyLinkBtn">Copier le lien d'enquête</button>
+      <button class="btn btn-ghost btn-small" id="resetStatsBtn">Réinitialiser les stats à zéro</button>
+      <button class="btn btn-primary btn-small" id="editContentBtn">Modifier les textes du site</button>
+      <button class="nav-admin" id="logoutBtn">Se déconnecter</button>
+    </div>
+  </div>
+  <div class="admin-wrap">
+    <p id="editSavedMsg" style="color:var(--accent-deep); font-size:0.9rem; min-height:1.3em; margin:-10px 0 20px;"></p>
+    <p style="color:var(--ink-soft); font-size:0.82rem; margin:-14px 0 12px;">Cliquez sur un chiffre pour le modifier directement.</p>
+    <div class="admin-grid">
+      <div class="admin-stat"><span>Interventions ce mois</span><b class="stat-editable" data-stat="interventions">128</b></div>
+      <div class="admin-stat"><span>Nouveaux devis</span><b class="stat-editable" data-stat="devis">34</b></div>
+      <div class="admin-stat"><span>Chiffre d'affaires</span><b class="stat-editable" data-stat="ca">9 420 €</b></div>
+      <div class="admin-stat"><span>Taux de satisfaction</span><b class="stat-editable" data-stat="satisfaction">96 %</b></div>
+    </div>
+
+    <h3 style="margin-bottom:16px;">Demandes de rendez-vous</h3>
+    <div id="bookingsList" style="margin-bottom:36px;"></div>
+
+    <h3 style="margin-bottom:16px;">Réservations récentes</h3>
+    <div class="overflow-x">
+      <table>
+        <thead>
+          <tr><th>Client</th><th>Service</th><th>Date</th><th>Montant</th><th>Statut</th><th></th></tr>
+        </thead>
+        <tbody id="recentBookingsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="edit-bar" id="editBar">
+  <span>Mode édition — cliquez sur un texte pour le modifier</span>
+  <button class="btn btn-ghost" id="cancelEditBtn">Annuler</button>
+  <button class="btn btn-primary" id="saveEditBtn">Enregistrer</button>
+</div>
+
+<!-- ================= ENQUÊTE DE SATISFACTION ================= -->
+<div id="surveyView">
+  <div class="survey-card">
+    <div class="survey-form" id="surveyForm">
+      <h2>Merci d'avoir fait appel à Némo Propreté</h2>
+      <p>Votre intervention s'est-elle bien passée ?</p>
+      <div class="survey-choices">
+        <button class="survey-choice" data-choice="Oui, tout s'est bien passé" type="button">
+          <span class="emoji">😊</span>Oui, tout s'est bien passé
+        </button>
+        <button class="survey-choice" data-choice="Non, il y a eu un souci" type="button">
+          <span class="emoji">😕</span>Non, il y a eu un souci
+        </button>
+      </div>
+      <label for="surveyComment">Un commentaire à ajouter ? (optionnel)</label>
+      <textarea id="surveyComment" placeholder="Lorem ipsum dolor sit amet..." style="margin-top:8px;"></textarea>
+      <button class="btn btn-primary" id="sendSurveyBtn" style="width:100%;" disabled>Envoyer mon avis</button>
+    </div>
+    <div class="survey-thanks" id="surveyThanks">
+      <span style="font-size:2rem;">🙏</span>
+      <h2 style="margin:0;">Merci pour votre retour !</h2>
+      <p style="margin:0;">Votre logiciel de messagerie va s'ouvrir avec votre avis pré-rempli — il ne vous reste plus qu'à cliquer sur envoyer.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- Enquête de satisfaction (page dédiée via ?avis=1) ----------
+  const surveyView = document.getElementById('surveyView');
+  const surveyForm = document.getElementById('surveyForm');
+  const surveyThanks = document.getElementById('surveyThanks');
+  const sendSurveyBtn = document.getElementById('sendSurveyBtn');
+  const surveyComment = document.getElementById('surveyComment');
+  let selectedChoice = null;
+
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('avis') === '1' || window.location.hash === '#avis'){
+    document.getElementById('siteView').classList.add('hidden');
+    surveyView.classList.add('open');
+  }
+
+  document.querySelectorAll('.survey-choice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.survey-choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedChoice = btn.getAttribute('data-choice');
+      sendSurveyBtn.disabled = false;
+    });
+  });
+
+  sendSurveyBtn.addEventListener('click', () => {
+    if(!selectedChoice) return;
+    const subject = encodeURIComponent(`Enquête satisfaction – ${selectedChoice}`);
+    const body = encodeURIComponent(
+      `Réponse : ${selectedChoice}\nCommentaire : ${surveyComment.value.trim() || '(aucun)'}`
+    );
+    window.location.href = `mailto:contact@nemo-proprete.fr?subject=${subject}&body=${body}`;
+    surveyForm.classList.add('hidden');
+    surveyThanks.classList.add('open');
+  });
+
+  const copySurveyLinkBtn = document.getElementById('copySurveyLinkBtn');
+  if(copySurveyLinkBtn){
+    copySurveyLinkBtn.addEventListener('click', async () => {
+      const link = `${window.location.origin}${window.location.pathname}?avis=1`;
+      try{
+        await navigator.clipboard.writeText(link);
+        editSavedMsg.textContent = "Lien d'enquête copié dans le presse-papiers.";
+      }catch(err){
+        editSavedMsg.textContent = link;
+      }
+    });
+  }
+
+  // Hash SHA-256 de "sam:mas" — le mot de passe n'apparaît jamais en clair dans le code.
+  const ADMIN_HASH = "13dc1e90f144a7259555ab91c9112e61032ac60705bf776c43eafb1c7929a130";
+
+  async function sha256Hex(str){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  const openLoginBtn = document.getElementById('openLogin');
+  const closeLoginBtn = document.getElementById('closeLogin');
+  const loginOverlay = document.getElementById('loginOverlay');
+  const loginForm = document.getElementById('loginForm');
+  const loginError = document.getElementById('loginError');
+  const siteView = document.getElementById('siteView');
+  const adminView = document.getElementById('adminView');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function showAdmin(){
+    siteView.classList.add('hidden');
+    adminView.classList.add('open');
+    window.scrollTo(0,0);
+    renderBookings();
+    renderRecentBookings();
+    loadStats();
+  }
+  function showSite(){
+    adminView.classList.remove('open');
+    siteView.classList.remove('hidden');
+    window.scrollTo(0,0);
+  }
+
+  openLoginBtn.addEventListener('click', () => {
+    loginOverlay.classList.add('open');
+    loginError.textContent = '';
+    loginForm.reset();
+    document.getElementById('user').focus();
+  });
+  closeLoginBtn.addEventListener('click', () => loginOverlay.classList.remove('open'));
+  loginOverlay.addEventListener('click', (e) => { if(e.target === loginOverlay) loginOverlay.classList.remove('open'); });
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = document.getElementById('user').value.trim();
+    const pass = document.getElementById('pass').value;
+    const hash = await sha256Hex(`${user}:${pass}`);
+    if(hash === ADMIN_HASH){
+      try{ sessionStorage.setItem('nemo_admin_session', '1'); }catch(err){}
+      loginOverlay.classList.remove('open');
+      showAdmin();
+    } else {
+      loginError.textContent = "Identifiant ou mot de passe incorrect.";
+    }
+  });
+
+  // ---------- Contenu éditable ----------
+  const editables = Array.from(document.querySelectorAll('[data-edit]'));
+  const editBar = document.getElementById('editBar');
+  const editContentBtn = document.getElementById('editContentBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
+  const saveEditBtn = document.getElementById('saveEditBtn');
+  const editSavedMsg = document.getElementById('editSavedMsg');
+  const STORAGE_KEY = 'nemo_content_overrides';
+
+  function loadOverrides(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      editables.forEach(el => {
+        const key = el.getAttribute('data-edit');
+        if(data[key] !== undefined) el.innerHTML = data[key];
+      });
+    }catch(err){}
+  }
+
+  function enterEditMode(){
+    showSite();
+    editables.forEach(el => el.setAttribute('contenteditable', 'true'));
+    editBar.classList.add('open');
+  }
+
+  function exitEditMode(){
+    editables.forEach(el => el.removeAttribute('contenteditable'));
+    editBar.classList.remove('open');
+  }
+
+  editContentBtn.addEventListener('click', enterEditMode);
+
+  cancelEditBtn.addEventListener('click', () => {
+    loadOverrides(); // revert unsaved changes
+    exitEditMode();
+    showAdmin();
+  });
+
+  saveEditBtn.addEventListener('click', () => {
+    const data = {};
+    editables.forEach(el => { data[el.getAttribute('data-edit')] = el.innerHTML; });
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      editSavedMsg.textContent = "Modifications enregistrées sur cet appareil.";
+    }catch(err){
+      editSavedMsg.textContent = "Échec de l'enregistrement (stockage indisponible).";
+    }
+    exitEditMode();
+    showAdmin();
+  });
+
+  // Appliquer les textes sauvegardés au chargement
+  loadOverrides();
+
+  logoutBtn.addEventListener('click', () => {
+    try{ sessionStorage.removeItem('nemo_admin_session'); }catch(err){}
+    showSite();
+  });
+
+  // Restore session on load (per-browser only)
+  try{
+    if(sessionStorage.getItem('nemo_admin_session') === '1'){ showAdmin(); }
+  }catch(err){}
+
+  // ---------- Statistiques admin (éditables) ----------
+  const STATS_KEY = 'nemo_admin_stats';
+  const DEFAULT_STATS = { interventions: '128', devis: '34', ca: '9 420 €', satisfaction: '96 %' };
+  const ZERO_STATS = { interventions: '0', devis: '0', ca: '0 €', satisfaction: '0 %' };
+  const statEls = Array.from(document.querySelectorAll('.stat-editable'));
+
+  function loadStats(){
+    let data;
+    try{
+      const raw = localStorage.getItem(STATS_KEY);
+      data = raw ? JSON.parse(raw) : DEFAULT_STATS;
+    }catch(err){ data = DEFAULT_STATS; }
+    statEls.forEach(el => {
+      const key = el.getAttribute('data-stat');
+      if(data[key] !== undefined) el.textContent = data[key];
+    });
+  }
+
+  function saveStats(){
+    const data = {};
+    statEls.forEach(el => { data[el.getAttribute('data-stat')] = el.textContent.trim(); });
+    try{ localStorage.setItem(STATS_KEY, JSON.stringify(data)); }catch(err){}
+  }
+
+  statEls.forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.addEventListener('blur', saveStats);
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ e.preventDefault(); el.blur(); }
+    });
+  });
+
+  document.getElementById('resetStatsBtn').addEventListener('click', () => {
+    statEls.forEach(el => { el.textContent = ZERO_STATS[el.getAttribute('data-stat')]; });
+    try{ localStorage.setItem(STATS_KEY, JSON.stringify(ZERO_STATS)); }catch(err){}
+    editSavedMsg.textContent = "Statistiques réinitialisées à zéro.";
+  });
+
+  // ---------- Prise de rendez-vous ----------
+  const BOOKINGS_KEY = 'nemo_bookings';
+
+  function getBookings(){
+    try{
+      const raw = localStorage.getItem(BOOKINGS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(err){ return []; }
+  }
+
+  function saveBookings(list){
+    try{ localStorage.setItem(BOOKINGS_KEY, JSON.stringify(list)); }catch(err){}
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderBookings(){
+    const container = document.getElementById('bookingsList');
+    if(!container) return;
+    const list = getBookings().slice().sort((a,b) => b.createdAt - a.createdAt);
+    if(list.length === 0){
+      container.innerHTML = '<p class="empty-note">Aucune demande pour le moment.</p>';
+      return;
+    }
+    container.innerHTML = list.map(b => `
+      <div class="booking-card">
+        <div class="booking-info">
+          <b>${escapeHtml(b.name)}</b>
+          <div class="meta">${escapeHtml(b.service)} · souhaité le ${escapeHtml(b.date || '—')} · ${escapeHtml(b.contact)}</div>
+          ${b.message ? `<div class="msg">${escapeHtml(b.message)}</div>` : ''}
+        </div>
+        <div class="booking-actions">
+          <span class="tag ${b.status === 'done' ? 'tag-done' : 'tag-pending'}">${b.status === 'done' ? 'Traité' : 'En attente'}</span>
+          <button class="btn btn-ghost btn-small" data-toggle="${b.id}">${b.status === 'done' ? 'Rouvrir' : 'Marquer traité'}</button>
+          <button class="btn btn-ghost btn-small" data-delete="${b.id}">Supprimer</button>
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-toggle');
+        const list = getBookings();
+        const item = list.find(b => b.id === id);
+        if(item) item.status = item.status === 'done' ? 'pending' : 'done';
+        saveBookings(list);
+        renderBookings();
+      });
+    });
+    container.querySelectorAll('[data-delete]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-delete');
+        saveBookings(getBookings().filter(b => b.id !== id));
+        renderBookings();
+      });
+    });
+  }
+
+  document.getElementById('rdvForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const list = getBookings();
+    list.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      name: document.getElementById('rdvName').value.trim(),
+      contact: document.getElementById('rdvContact').value.trim(),
+      service: document.getElementById('rdvService').value,
+      date: document.getElementById('rdvDate').value,
+      message: document.getElementById('rdvMessage').value.trim(),
+      status: 'pending',
+      createdAt: Date.now()
+    });
+    saveBookings(list);
+    document.getElementById('rdvStatus').textContent = "Votre demande de rendez-vous a bien été enregistrée.";
+    e.target.reset();
+  });
+
+  // Fake contact form submit
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('formStatus').textContent = "Merci, votre demande a bien été envoyée (démonstration).";
+    e.target.reset();
+  });
+
+  // ---------- Réservations récentes (supprimables) ----------
+  const RECENT_KEY = 'nemo_recent_bookings';
+  const DEFAULT_RECENT = [
+    { id: 'r1', client: 'Lorem Ipsum', service: 'Nettoyage résidentiel', date: '03/09/2026', amount: '45 €', status: 'done' },
+    { id: 'r2', client: 'Dolor Sit Amet', service: 'Nettoyage de bureaux', date: '05/09/2026', amount: '80 €', status: 'done' },
+    { id: 'r3', client: 'Consectetur Adipiscing', service: 'Lavage de vitres', date: '08/09/2026', amount: '30 €', status: 'pending' },
+    { id: 'r4', client: 'Elit Sed', service: 'Fin de bail', date: '10/09/2026', amount: '140 €', status: 'done' },
+    { id: 'r5', client: 'Eiusmod Tempor', service: 'Après travaux', date: '14/09/2026', amount: '160 €', status: 'pending' },
+    { id: 'r6', client: 'Incididunt Labore', service: 'Nettoyage résidentiel', date: '16/09/2026', amount: '35 €', status: 'done' }
+  ];
+
+  function getRecentBookings(){
+    try{
+      const raw = localStorage.getItem(RECENT_KEY);
+      if(raw) return JSON.parse(raw);
+      saveRecentBookings(DEFAULT_RECENT);
+      return DEFAULT_RECENT;
+    }catch(err){ return DEFAULT_RECENT; }
+  }
+
+  function saveRecentBookings(list){
+    try{ localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }catch(err){}
+  }
+
+  function renderRecentBookings(){
+    const body = document.getElementById('recentBookingsBody');
+    if(!body) return;
+    const list = getRecentBookings();
+    if(list.length === 0){
+      body.innerHTML = '<tr><td colspan="6" class="empty-note">Aucune réservation.</td></tr>';
+      return;
+    }
+    body.innerHTML = list.map(r => `
+      <tr>
+        <td>${escapeHtml(r.client)}</td>
+        <td>${escapeHtml(r.service)}</td>
+        <td>${escapeHtml(r.date)}</td>
+        <td>${escapeHtml(r.amount)}</td>
+        <td><span class="tag ${r.status === 'done' ? 'tag-done' : 'tag-pending'}">${r.status === 'done' ? 'Terminé' : 'En attente'}</span></td>
+        <td><button class="row-delete-btn" data-delete-recent="${r.id}">Supprimer</button></td>
+      </tr>
+    `).join('');
+
+    body.querySelectorAll('[data-delete-recent]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-delete-recent');
+        saveRecentBookings(getRecentBookings().filter(r => r.id !== id));
+        renderRecentBookings();
+      });
+    });
+  }
+</script>
+</body>
+</html>
